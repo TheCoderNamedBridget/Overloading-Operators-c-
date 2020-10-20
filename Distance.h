@@ -28,8 +28,8 @@ class Distance //English Distance class
         }
         
         
-        Distance operator+( Distance D, Distance d2 ) { 
-            float addInches = d2.inches + D.inches;
+        Distance operator+( Distance d2 ) { 
+            float addInches = d2.inches + inches;
             int feetAdd = 0;
             float inchAdd = 0;
             if ( addInches > 12 )
@@ -41,29 +41,38 @@ class Distance //English Distance class
             {
                 inchAdd = addInches;
             }
-            Distance newDist = Distance( d2.feet + D.feet + feetAdd, inchAdd);
+            Distance newDist = Distance( d2.feet + feet + feetAdd, inchAdd);
             return newDist;            
         }
         
         friend Distance operator-( Distance D, Distance D2 ) { 
+            
             if ( D.inches > 12 )
             {
                 D.feet += D.inches / 12;
                 D.inches = D.inches - (D.inches / 12);
             }
             float subinches = D.inches - D2.inches;
-            int feetSub = 0;
+            int feetSub = D.feet - D2.feet;
             float inchSub = 0;
-            if ( D.inches - D2.inches < 0 )
+            cout<<"here "<<subinches<<endl;
+            cout<<"here 1 "<<D.inches<<" 2 "<<D2.inches<<endl;
+            if ( subinches < 0 || feetSub < 0 )
             {
-                feetSub = -1;
+                cout<<"here"<<endl;
+                feetSub -= 1;
                 inchSub = 12 + subinches;
+                if ( feetSub < 0)
+                {
+                    inchSub += feetSub * 12;
+                    feetSub = 0;
+                }
             }
             else 
             {
                 inchSub = subinches;
             }
-            Distance newDist = Distance( D.feet - D2.feet, D.inches - D2.inches);
+            Distance newDist = Distance( feetSub, inchSub);
             return newDist;            
         }
 };
